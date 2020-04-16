@@ -3,6 +3,8 @@ package com.franperu.tfg.personas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/personas")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class PersonaController {
 
 	@Autowired
@@ -39,12 +42,14 @@ public class PersonaController {
 	}
 	
 	@PostMapping("/nuevo")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> create(@RequestBody Persona persona) {
 		personaService.guardar(persona);
 		return new ResponseEntity(new Mensaje("persona guardada"), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/actualizar/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> update(@RequestBody Persona persona, @PathVariable("id") Long id) {
 		Persona personaUpdate = personaService.obtenerPorId(id).get();
 		personaUpdate.setNombre(persona.getNombre());
@@ -65,6 +70,7 @@ public class PersonaController {
 	}
 	
 	@DeleteMapping("/borrar/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		if(!personaService.existePorId(id))
 			return new ResponseEntity(new Mensaje("no existe ese persona"), HttpStatus.NOT_FOUND);
