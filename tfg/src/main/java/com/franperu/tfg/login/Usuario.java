@@ -2,6 +2,10 @@ package com.franperu.tfg.login;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.franperu.tfg.personas.Persona;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +34,11 @@ public class Usuario {
     @ManyToMany
     @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Rol> roles = new HashSet<>();
+    
+    @NotNull
+    @JsonManagedReference
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Persona> personas;
 
     public Usuario() {
     }
@@ -87,6 +96,14 @@ public class Usuario {
 
     public void setRoles(Set<Rol> roles) {
         this.roles = roles;
+    }
+    
+    public Set<Persona> getPersonas() {
+        return personas;
+    }
+
+    public void setPersonas(Set<Persona> personas) {
+        this.personas = personas;
     }
     
 }

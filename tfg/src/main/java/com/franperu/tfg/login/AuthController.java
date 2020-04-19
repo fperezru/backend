@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.franperu.tfg.DTO.Mensaje;
 import com.franperu.tfg.enums.RolNombre;
+import com.franperu.tfg.mascotas.Mascota;
 import com.franperu.tfg.security.jwt.JwtProvider;
 
 import javax.validation.Valid;
@@ -87,4 +90,13 @@ public class AuthController {
         JwtDTO jwtDTO = new JwtDTO(jwt, userDetails.getUsername(), userDetails.getAuthorities());
         return new ResponseEntity<JwtDTO>(jwtDTO, HttpStatus.OK);
     }
+    
+    @GetMapping("/user/{n}")
+	public ResponseEntity<Usuario> getOne(@PathVariable String n){
+	    if(!usuarioService.existePorNombre(n))
+	       return new ResponseEntity(new Mensaje("no existe esa usuario"), HttpStatus.NOT_FOUND);
+	        
+	    Usuario usuario = usuarioService.getByNombreUsuario(n).get();
+	    return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+	}
 }

@@ -5,13 +5,21 @@ package com.franperu.tfg.personas;
 import java.util.Date;
 
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.franperu.tfg.login.Usuario;
 import com.sun.istack.NotNull;
 
 @Entity
@@ -66,12 +74,18 @@ public class Persona {
 	
     @Column(name = "fecha_defuncion")
     private Date fecha_defuncion;
-	
+    
+    @NotNull
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+    
 	public Persona() {
 		
 	}
 	
-	public Persona(String nombre, String apellido1, String apellido2, String relacion, String descripcion, String imagen1, String imagen2, String imagen3, String imagen4, String video1, String video2, Date fecha_nacimiento, Date fecha_defuncion) {
+	public Persona(String nombre, String apellido1, String apellido2, String relacion, String descripcion, String imagen1, String imagen2, String imagen3, String imagen4, String video1, String video2, Date fecha_nacimiento, Date fecha_defuncion, Usuario usuario) {
 		this.nombre = nombre;
 		this.apellido1 = apellido1;
 		this.apellido2 = apellido2;
@@ -85,6 +99,15 @@ public class Persona {
 		this.video2 = video2;
 		this.fecha_nacimiento = fecha_nacimiento;
 		this.fecha_defuncion = fecha_defuncion;
+		this.usuario = usuario;
+	}
+	
+	public Usuario getUsuario() {
+		return this.usuario;
+	}
+	
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	public Long getId() {

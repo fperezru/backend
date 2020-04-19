@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.franperu.tfg.login.Usuario;
+
 @Service
 @Transactional
 public class PersonaService {
@@ -16,6 +18,11 @@ public class PersonaService {
 	
 	public List<Persona> obtenerPersonas() {
 		List<Persona> lista_personas = personaRepository.findAll();
+		return lista_personas;
+	}
+	
+	public List<Persona> obtenerPersonasUsuario(Usuario usuario) {
+		List<Persona> lista_personas = personaRepository.findByUsuario(usuario);
 		return lista_personas;
 	}
 	
@@ -34,5 +41,6 @@ public class PersonaService {
 	public boolean existePorId(Long id) {
 		return personaRepository.existsById(id);
 	}
+	
 	
 }

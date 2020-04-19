@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.franperu.tfg.DTO.Mensaje;
+import com.franperu.tfg.login.Usuario;
 
 import java.util.List;
 
@@ -29,6 +30,14 @@ public class PersonaController {
 	@GetMapping("/lista")
     public ResponseEntity<List<Persona>> getLista(){
         List<Persona> lista = personaService.obtenerPersonas();
+        return new ResponseEntity<List<Persona>>(lista, HttpStatus.OK);
+    }
+	
+	@GetMapping("/lista/{id}")
+    public ResponseEntity<List<Persona>> getListaPersonas(@PathVariable Long id){
+		Usuario usuario = new Usuario();
+		usuario.setId(id);
+        List<Persona> lista = personaService.obtenerPersonasUsuario(usuario);
         return new ResponseEntity<List<Persona>>(lista, HttpStatus.OK);
     }
 	
