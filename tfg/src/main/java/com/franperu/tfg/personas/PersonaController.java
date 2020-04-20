@@ -51,14 +51,12 @@ public class PersonaController {
 	}
 	
 	@PostMapping("/nuevo")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> create(@RequestBody Persona persona) {
 		personaService.guardar(persona);
 		return new ResponseEntity(new Mensaje("persona guardada"), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/actualizar/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> update(@RequestBody Persona persona, @PathVariable("id") Long id) {
 		Persona personaUpdate = personaService.obtenerPorId(id).get();
 		personaUpdate.setNombre(persona.getNombre());
@@ -79,7 +77,6 @@ public class PersonaController {
 	}
 	
 	@DeleteMapping("/borrar/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		if(!personaService.existePorId(id))
 			return new ResponseEntity(new Mensaje("no existe ese persona"), HttpStatus.NOT_FOUND);
