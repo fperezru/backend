@@ -16,6 +16,10 @@ public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    public Optional<Usuario> getById(Long id){
+        return usuarioRepository.findById(id);
+    }
+    
     public Optional<Usuario> getByNombreUsuario(String nu){
         return usuarioRepository.findByNombreUsuario(nu);
     }

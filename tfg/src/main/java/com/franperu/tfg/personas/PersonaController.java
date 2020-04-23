@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.franperu.tfg.DTO.Mensaje;
 import com.franperu.tfg.login.Usuario;
+import com.franperu.tfg.login.UsuarioService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/personas")
@@ -26,6 +28,8 @@ public class PersonaController {
 
 	@Autowired
 	PersonaService personaService;
+	@Autowired
+	UsuarioService usuarioService;
 	
 	@GetMapping("/lista")
     public ResponseEntity<List<Persona>> getLista(){
@@ -50,8 +54,12 @@ public class PersonaController {
 	    return new ResponseEntity<Persona>(persona, HttpStatus.OK);
 	}
 	
-	@PostMapping("/nuevo")
-	public ResponseEntity<?> create(@RequestBody Persona persona) {
+	@PostMapping("/nuevo/{id}")
+	public ResponseEntity<?> create(@RequestBody Persona persona, @PathVariable Long id) {
+		Optional<Usuario> usuarioOptional = usuarioService.getById(id);
+		Usuario usuario = new Usuario();
+		usuario = usuarioOptional.get();
+		persona.setUsuario(usuario);
 		personaService.guardar(persona);
 		return new ResponseEntity(new Mensaje("persona guardada"), HttpStatus.CREATED);
 	}

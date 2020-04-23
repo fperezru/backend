@@ -1,6 +1,7 @@
 package com.franperu.tfg.mascotas;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.franperu.tfg.DTO.Mensaje;
+import com.franperu.tfg.login.Usuario;
+import com.franperu.tfg.login.UsuarioService;
+import com.franperu.tfg.personas.Persona;
 
 
 @RestController
@@ -25,11 +29,21 @@ public class MascotaController {
 
 	@Autowired
 	MascotaService mascotaService;
+	@Autowired
+	UsuarioService usuarioService;
 	
 	@GetMapping("/lista")
     public ResponseEntity<List<Mascota>> getLista(){
         List<Mascota> lista = mascotaService.obtenerMascotas();
         return new ResponseEntity<List<Mascota>>(lista, HttpStatus.OK);
+    }
+	
+	@GetMapping("/lista/{id}")
+    public ResponseEntity<List<Mascota>> getListaMacotas(@PathVariable Long id){
+		Usuario usuario = new Usuario();
+		usuario.setId(id);
+		List<Mascota> lista = mascotaService.obtenerMascotasUsuario(usuario);
+		return new ResponseEntity<List<Mascota>>(lista, HttpStatus.OK);
     }
 	
 	@GetMapping("/detalle/{id}")
@@ -41,8 +55,12 @@ public class MascotaController {
 	    return new ResponseEntity<Mascota>(mascota, HttpStatus.OK);
 	}
 	
-	@PostMapping("/nuevo")
-	public ResponseEntity<?> create(@RequestBody Mascota mascota) {
+	@PostMapping("/nuevo/{id}")
+	public ResponseEntity<?> create(@RequestBody Mascota mascota, @PathVariable Long id) {
+		Optional<Usuario> usuarioOptional = usuarioService.getById(id);
+		Usuario usuario = new Usuario();
+		usuario = usuarioOptional.get();
+		mascota.setUsuario(usuario);
 		mascotaService.guardar(mascota);
 		return new ResponseEntity(new Mensaje("mascota guardada"), HttpStatus.CREATED);
 	}

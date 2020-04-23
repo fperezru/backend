@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.franperu.tfg.mascotas.Mascota;
 import com.franperu.tfg.personas.Persona;
 
 import java.util.HashSet;
@@ -37,8 +38,13 @@ public class Usuario {
     
     @NotNull
     @JsonManagedReference
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Persona> personas;
+    
+    @NotNull
+    @JsonManagedReference
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Mascota> mascotas;
 
     public Usuario() {
     }
@@ -104,6 +110,14 @@ public class Usuario {
 
     public void setPersonas(Set<Persona> personas) {
         this.personas = personas;
+    }
+    
+    public Set<Mascota> getMascotas() {
+        return mascotas;
+    }
+
+    public void setMascotas(Set<Mascota> mascotas) {
+        this.mascotas = mascotas;
     }
     
 }
