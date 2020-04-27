@@ -1,6 +1,7 @@
 package com.franperu.tfg.otros_recuerdos;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.franperu.tfg.DTO.Mensaje;
+import com.franperu.tfg.login.Usuario;
+import com.franperu.tfg.login.UsuarioService;
 
 @RestController
 @RequestMapping("/api/otros")
@@ -24,10 +27,20 @@ public class OtroRecuerdoController {
 	
 	@Autowired
 	OtroRecuerdoService otrosRecuerdosService;
+	@Autowired
+	UsuarioService usuarioService;
 	
 	@GetMapping("/lista")
     public ResponseEntity<List<OtroRecuerdo>> getLista(){
-        List<OtroRecuerdo> lista = otrosRecuerdosService.obtenerMascotas();
+        List<OtroRecuerdo> lista = otrosRecuerdosService.obtenerRecuerdos();
+        return new ResponseEntity<List<OtroRecuerdo>>(lista, HttpStatus.OK);
+    }
+	
+	@GetMapping("/lista/{id}")
+    public ResponseEntity<List<OtroRecuerdo>> getListaRecuerdos(@PathVariable Long id){
+		Usuario usuario = new Usuario();
+		usuario.setId(id);
+		List<OtroRecuerdo> lista = otrosRecuerdosService.obtenerRecuerdosUsuario(usuario);
         return new ResponseEntity<List<OtroRecuerdo>>(lista, HttpStatus.OK);
     }
 	
@@ -40,8 +53,12 @@ public class OtroRecuerdoController {
 	    return new ResponseEntity<OtroRecuerdo>(recuerdo, HttpStatus.OK);
 	}
 	
-	@PostMapping("/nuevo")
-	public ResponseEntity<?> create(@RequestBody OtroRecuerdo recuerdo) {
+	@PostMapping("/nuevo/{id}")
+	public ResponseEntity<?> create(@RequestBody OtroRecuerdo recuerdo, @PathVariable Long id) {
+		Optional<Usuario> usuarioOptional = usuarioService.getById(id);
+		Usuario usuario = new Usuario();
+		usuario = usuarioOptional.get();
+		recuerdo.setUsuario(usuario);
 		otrosRecuerdosService.guardar(recuerdo);
 		return new ResponseEntity(new Mensaje("recuerdo guardado"), HttpStatus.CREATED);
 	}

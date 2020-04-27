@@ -1,6 +1,7 @@
 package com.franperu.tfg.viajes;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.franperu.tfg.DTO.Mensaje;
+import com.franperu.tfg.login.Usuario;
+import com.franperu.tfg.login.UsuarioService;
 
 
 @RestController
@@ -25,10 +28,20 @@ public class ViajeController {
 
 	@Autowired
 	ViajeService viajeService;
+	@Autowired
+	UsuarioService usuarioService;
 	
 	@GetMapping("/lista")
     public ResponseEntity<List<Viaje>> getLista(){
-        List<Viaje> lista = viajeService.obtenerMascotas();
+        List<Viaje> lista = viajeService.obtenerViajes();
+        return new ResponseEntity<List<Viaje>>(lista, HttpStatus.OK);
+    }
+	
+	@GetMapping("/lista/{id}")
+    public ResponseEntity<List<Viaje>> getListaViajes(@PathVariable Long id){
+		Usuario usuario = new Usuario();
+		usuario.setId(id);
+        List<Viaje> lista = viajeService.obtenerViajesUsuario(usuario);
         return new ResponseEntity<List<Viaje>>(lista, HttpStatus.OK);
     }
 	
@@ -41,8 +54,12 @@ public class ViajeController {
 	    return new ResponseEntity<Viaje>(viaje, HttpStatus.OK);
 	}
 	
-	@PostMapping("/nuevo")
-	public ResponseEntity<?> create(@RequestBody Viaje viaje) {
+	@PostMapping("/nuevo/{id}")
+	public ResponseEntity<?> create(@RequestBody Viaje viaje, @PathVariable Long id) {
+		Optional<Usuario> usuarioOptional = usuarioService.getById(id);
+		Usuario usuario = new Usuario();
+		usuario = usuarioOptional.get();
+		viaje.setUsuario(usuario);
 		viajeService.guardar(viaje);
 		return new ResponseEntity(new Mensaje("viaje guardado"), HttpStatus.CREATED);
 	}

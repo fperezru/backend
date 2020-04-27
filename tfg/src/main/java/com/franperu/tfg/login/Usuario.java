@@ -5,7 +5,9 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.franperu.tfg.mascotas.Mascota;
+import com.franperu.tfg.otros_recuerdos.OtroRecuerdo;
 import com.franperu.tfg.personas.Persona;
+import com.franperu.tfg.viajes.Viaje;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -45,6 +47,16 @@ public class Usuario {
     @JsonManagedReference
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Mascota> mascotas;
+    
+    @NotNull
+    @JsonManagedReference
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Viaje> viajes;
+    
+    @NotNull
+    @JsonManagedReference
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<OtroRecuerdo> otros_recuerdos;
 
     public Usuario() {
     }
@@ -118,6 +130,22 @@ public class Usuario {
 
     public void setMascotas(Set<Mascota> mascotas) {
         this.mascotas = mascotas;
+    }
+    
+    public Set<Viaje> getViajess() {
+        return viajes;
+    }
+
+    public void setViajes(Set<Viaje> viajes) {
+        this.viajes = viajes;
+    }
+    
+    public Set<OtroRecuerdo> getOtrosRecuerdos() {
+        return otros_recuerdos;
+    }
+
+    public void setOtrosRecuerdos(Set<OtroRecuerdo> otros_recuerdos) {
+        this.otros_recuerdos = otros_recuerdos;
     }
     
 }

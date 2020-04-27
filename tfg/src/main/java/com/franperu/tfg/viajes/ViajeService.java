@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.franperu.tfg.login.Usuario;
+
 @Service
 @Transactional
 public class ViajeService {
@@ -14,9 +16,14 @@ public class ViajeService {
 	@Autowired
 	ViajeRepository viajeRepository;
 	
-	public List<Viaje> obtenerMascotas() {
-		List<Viaje> lista_mascotas = viajeRepository.findAll();
-		return lista_mascotas;
+	public List<Viaje> obtenerViajes() {
+		List<Viaje> lista_viajes = viajeRepository.findAll();
+		return lista_viajes;
+	}
+	
+	public List<Viaje> obtenerViajesUsuario(Usuario usuario) {
+		List<Viaje> lista_viajes = viajeRepository.findByUsuario(usuario);
+		return lista_viajes;
 	}
 	
 	public Optional<Viaje> obtenerPorId(Long id) {
