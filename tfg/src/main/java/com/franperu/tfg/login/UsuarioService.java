@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.franperu.tfg.login.Usuario;
 import com.franperu.tfg.login.UsuarioRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +17,21 @@ public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    public List<Usuario> obtenerUsusarios() {
+    	List<Usuario> lista_usuarios = usuarioRepository.findAll();
+    	return lista_usuarios;
+    }
+    
+    public List<Usuario> obtenerFamiliares(Rol rol) {
+    	List<Usuario> lista_familiares = usuarioRepository.findByRoles(rol);
+    	return lista_familiares;
+    }
+    
+    public List<Usuario> obtenerPacientes(Long familiar) {
+    	List<Usuario> lista_pacientes = usuarioRepository.findByFamiliar(familiar);
+    	return lista_pacientes;
+    }
+    
     public Optional<Usuario> getById(Long id){
         return usuarioRepository.findById(id);
     }

@@ -19,6 +19,8 @@ public class NuevoUsuario {
     private String password;
 
     private Set<String> roles;
+    
+    private Long familiar;
 
     public String getNombre() {
         return nombre;
@@ -58,5 +60,13 @@ public class NuevoUsuario {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+    
+    public Long getFamiliar() {
+    	return familiar;
+    }
+    
+    public void setFamiliar(Long familiar) {
+    	this.familiar = familiar;
     }
 }

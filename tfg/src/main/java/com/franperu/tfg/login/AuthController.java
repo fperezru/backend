@@ -26,6 +26,7 @@ import com.franperu.tfg.security.jwt.JwtProvider;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -47,7 +48,7 @@ public class AuthController {
 
     @Autowired
     JwtProvider jwtProvider;
-
+    
     @PostMapping("/nuevo")
     public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
         if(bindingResult.hasErrors())
@@ -58,7 +59,7 @@ public class AuthController {
             return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
         Usuario usuario =
                 new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
-                        passwordEncoder.encode(nuevoUsuario.getPassword()));
+                        passwordEncoder.encode(nuevoUsuario.getPassword()), nuevoUsuario.getFamiliar());
         Set<String> rolesStr = nuevoUsuario.getRoles();
         Set<Rol> roles = new HashSet<>();
         for (String rol : rolesStr) {
@@ -66,6 +67,10 @@ public class AuthController {
                 case "admin":
                     Rol rolAdmin = rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get();
                     roles.add(rolAdmin);
+                    break;
+                case "familiar":
+                    Rol rolFamiliar = rolService.getByRolNombre(RolNombre.ROLE_FAMILIAR).get();
+                    roles.add(rolFamiliar);
                     break;
                 default:
                     Rol rolUser = rolService.getByRolNombre(RolNombre.ROLE_USER).get();

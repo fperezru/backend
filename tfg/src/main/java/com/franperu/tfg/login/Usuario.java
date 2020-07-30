@@ -3,7 +3,16 @@ package com.franperu.tfg.login;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.franperu.tfg.diario.Diario;
+import com.franperu.tfg.informacion.EntityIdResolver;
+import com.franperu.tfg.informacion.Informacion;
+import com.franperu.tfg.informacion.Tipo;
 import com.franperu.tfg.mascotas.Mascota;
 import com.franperu.tfg.otros_recuerdos.OtroRecuerdo;
 import com.franperu.tfg.personas.Persona;
@@ -13,6 +22,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+property = "id",
+resolver = EntityIdResolver.class,
+scope=Usuario.class)
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,40 +45,46 @@ public class Usuario {
     @NotNull
     private String password;
     
-
-    @NotNull
-    @ManyToMany
-    @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
-    private Set<Rol> roles = new HashSet<>();
+    private Long familiar;
     
     @NotNull
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Rol> roles = new HashSet<>();
+    
     @JsonManagedReference
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Persona> personas;
-    
-    @NotNull
+
     @JsonManagedReference
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Mascota> mascotas;
     
-    @NotNull
     @JsonManagedReference
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Viaje> viajes;
     
-    @NotNull
     @JsonManagedReference
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<OtroRecuerdo> otros_recuerdos;
+    
+    @JsonManagedReference
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Diario> paginas;
+    
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Informacion> informaciones =  new HashSet<>();;
 
     public Usuario() {
     }
 
-    public Usuario(@NotNull String nombre, @NotNull String nombreUsuario, @NotNull String email, @NotNull String password) {
+    public Usuario(@NotNull String nombre, @NotNull String nombreUsuario, @NotNull String email, @NotNull String password, Long familiar) {
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
         this.password = password;
+        this.familiar = familiar;
     }
 
     public Long getId() {
@@ -107,6 +126,14 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public Long getFamiliar() {
+        return familiar;
+    }
+
+    public void setFamiliar(Long familiar) {
+        this.familiar = familiar;
+    }
 
     public Set<Rol> getRoles() {
         return roles;
@@ -146,6 +173,22 @@ public class Usuario {
 
     public void setOtrosRecuerdos(Set<OtroRecuerdo> otros_recuerdos) {
         this.otros_recuerdos = otros_recuerdos;
+    }
+    
+    public Set<Diario> getDiario() {
+        return paginas;
+    }
+
+    public void setDiario(Set<Diario> paginas) {
+        this.paginas = paginas;
+    }
+    
+    public Set<Informacion> getInformaciones() {
+        return informaciones;
+    }
+
+    public void setInformaciones(Set<Informacion> informaciones) {
+        this.informaciones = informaciones;
     }
     
 }
