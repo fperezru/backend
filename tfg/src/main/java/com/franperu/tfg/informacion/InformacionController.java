@@ -24,7 +24,7 @@ import com.franperu.tfg.login.UsuarioService;
 
 @RestController
 @RequestMapping("/api/informacion")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.38:4200"})
 public class InformacionController {
 	
 	@Autowired
@@ -43,8 +43,10 @@ public class InformacionController {
 	}
 	
 	@GetMapping("/lista/{tipo}")
-	public ResponseEntity<List<Informacion>> getListaTipo(@PathVariable String tipo) {
-		List<Informacion> lista = informacionService.obtenerInformacionesPorTipo(tipo);
+	public ResponseEntity<List<Informacion>> getListaTipo(@PathVariable Long tipo) {
+		Tipo p = new Tipo();
+		p.setId(tipo);
+		List<Informacion> lista = informacionService.obtenerInformacionesPorTipo(p);
 		return new ResponseEntity<List<Informacion>>(lista, HttpStatus.OK);
 	}
 	
@@ -71,30 +73,12 @@ public class InformacionController {
 	}
 	
 	@PutMapping("/actualizar/{id}")
-	public ResponseEntity<?> update(@RequestBody Informacion informacion, @PathVariable Long id, @PathVariable String tipo) {
-		Informacion informacionUpdate = informacionService.obtenerPorId(informacion.getId()).get();
-		Optional<Usuario> usuarioOptional = usuarioService.getById(id);
-		Usuario usuario = new Usuario();
-		usuario = usuarioOptional.get();
-		informacionUpdate.setUsuario(usuario);
-		
-		if(tipo == TipoNombre.ALIMENTACION.toString() ) {
-			Tipo tipoa = new Tipo(TipoNombre.ALIMENTACION);
-			informacionUpdate.setTipo(tipoa);
-		}
-		else if(tipo == TipoNombre.EJERCICIOS.toString() ) {
-			Tipo tipoej = new Tipo(TipoNombre.EJERCICIOS);
-			informacionUpdate.setTipo(tipoej);
-		}
-		else if(tipo == TipoNombre.ENFERMEDAD.toString() ) {
-			Tipo tipoen = new Tipo(TipoNombre.ENFERMEDAD);
-			informacionUpdate.setTipo(tipoen);
-		}
-		else if(tipo == TipoNombre.ORGANIZACIONES.toString() ) {
-			Tipo tipoorg = new Tipo(TipoNombre.ORGANIZACIONES);
-			informacionUpdate.setTipo(tipoorg);
-		}
-			
+	public ResponseEntity<?> update(@RequestBody Informacion informacion, @PathVariable Long id) {
+		Informacion informacionUpdate = informacionService.obtenerPorId(id).get();
+		informacionUpdate.setTitulo(informacion.getTitulo());
+		informacionUpdate.setContenido(informacion.getContenido());
+		informacionUpdate.setTipo(informacion.getTipo());
+		informacionUpdate.setUsuario(informacion.getUsuario());
 		informacionService.guardar(informacion);
 		return new ResponseEntity(new Mensaje("informacion actualizada"), HttpStatus.CREATED);
 	}

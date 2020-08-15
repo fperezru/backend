@@ -31,7 +31,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.38:4200"})
 public class AuthController {
 
     @Autowired
@@ -58,8 +58,9 @@ public class AuthController {
         if(usuarioService.existePorEmail(nuevoUsuario.getEmail()))
             return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
         Usuario usuario =
-                new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
-                        passwordEncoder.encode(nuevoUsuario.getPassword()), nuevoUsuario.getFamiliar());
+                new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getApellidos(), nuevoUsuario.getIdentificacion(),
+                		nuevoUsuario.getFechaNacimiento(), nuevoUsuario.getDomicilio(), nuevoUsuario.getTelefono(), nuevoUsuario.getEmail(), passwordEncoder.encode(nuevoUsuario.getPassword()), 
+                		nuevoUsuario.getFamiliar(), nuevoUsuario.getPermiso());
         Set<String> rolesStr = nuevoUsuario.getRoles();
         Set<Rol> roles = new HashSet<>();
         for (String rol : rolesStr) {

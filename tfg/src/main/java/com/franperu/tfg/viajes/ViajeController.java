@@ -69,12 +69,6 @@ public class ViajeController {
 		Viaje viajeUpdate = viajeService.obtenerPorId(id).get();
 		viajeUpdate.setLugar(viaje.getLugar());
 		viajeUpdate.setDescripcion(viaje.getDescripcion());
-		viajeUpdate.setImagen1(viaje.getImagen1());
-		viajeUpdate.setImagen2(viaje.getImagen2());
-		viajeUpdate.setImagen3(viaje.getImagen3());
-		viajeUpdate.setImagen4(viaje.getImagen4());
-		viajeUpdate.setVideo1(viaje.getVideo1());
-		viajeUpdate.setVideo2(viaje.getVideo2());
 		viajeService.guardar(viajeUpdate);
 		return new ResponseEntity(new Mensaje("viaje actualizado"), HttpStatus.CREATED);
 	}

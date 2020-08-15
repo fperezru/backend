@@ -21,20 +21,7 @@ public class InformacionService {
 		return lista_informacion;
 	}
 	
-	public List<Informacion> obtenerInformacionesPorTipo(String t) {
-		Tipo tipo = new Tipo();
-		if(t == TipoNombre.ALIMENTACION.toString() ) {
-			tipo.setTipoNombre(TipoNombre.ALIMENTACION);
-		}
-		else if(t == TipoNombre.EJERCICIOS.toString() ) {
-			tipo.setTipoNombre(TipoNombre.EJERCICIOS);
-		}
-		else if(t == TipoNombre.ENFERMEDAD.toString() ) {
-			tipo.setTipoNombre(TipoNombre.ENFERMEDAD);
-		}
-		else if(t == TipoNombre.ORGANIZACIONES.toString() ) {
-			tipo.setTipoNombre(TipoNombre.ORGANIZACIONES);
-		}
+	public List<Informacion> obtenerInformacionesPorTipo(Tipo tipo) {
 		List<Informacion> lista_informacion = informacionRepository.findByTipo(tipo);
 		return lista_informacion;
 	}

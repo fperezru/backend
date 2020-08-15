@@ -18,7 +18,7 @@ import com.franperu.tfg.fileUpload.UploadFileService;
 
 @RestController
 @RequestMapping("/api/upload")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.38:4200"})
 public class UploadFileController {
 	
 	@Autowired

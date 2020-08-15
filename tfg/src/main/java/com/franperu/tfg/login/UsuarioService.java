@@ -51,4 +51,12 @@ public class UsuarioService {
     public void guardar(Usuario usuario){
         usuarioRepository.save(usuario);
     }
+    
+    public boolean existePorId(Long id) {
+		return usuarioRepository.existsById(id);
+	}
+    
+    public void borrar(Long id) {
+    	usuarioRepository.deleteById(id);
+    }
 }

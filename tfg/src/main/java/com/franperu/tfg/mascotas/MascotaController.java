@@ -24,7 +24,7 @@ import com.franperu.tfg.personas.Persona;
 
 @RestController
 @RequestMapping("/api/mascotas")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.38:4200"})
 public class MascotaController {
 
 	@Autowired
@@ -71,12 +71,6 @@ public class MascotaController {
 		mascotaUpdate.setNombre(mascota.getNombre());
 		mascotaUpdate.setEspecie(mascota.getEspecie());
 		mascotaUpdate.setDescripcion(mascota.getDescripcion());
-		mascotaUpdate.setImagen1(mascota.getImagen1());
-		mascotaUpdate.setImagen2(mascota.getImagen2());
-		mascotaUpdate.setImagen3(mascota.getImagen3());
-		mascotaUpdate.setImagen4(mascota.getImagen4());
-		mascotaUpdate.setVideo1(mascota.getVideo1());
-		mascotaUpdate.setVideo2(mascota.getVideo2());
 		mascotaService.guardar(mascotaUpdate);
 		return new ResponseEntity(new Mensaje("mascota actualizada"), HttpStatus.CREATED);
 	}

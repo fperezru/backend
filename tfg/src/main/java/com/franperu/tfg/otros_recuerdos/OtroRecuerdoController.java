@@ -22,7 +22,7 @@ import com.franperu.tfg.login.UsuarioService;
 
 @RestController
 @RequestMapping("/api/otros")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.38:4200"})
 public class OtroRecuerdoController {
 	
 	@Autowired
@@ -68,12 +68,6 @@ public class OtroRecuerdoController {
 		OtroRecuerdo recuerdoUpdate = otrosRecuerdosService.obtenerPorId(id).get();
 		recuerdoUpdate.setTipo(recuerdo.getTipo());
 		recuerdoUpdate.setDescripcion(recuerdo.getDescripcion());
-		recuerdoUpdate.setImagen1(recuerdo.getImagen1());
-		recuerdoUpdate.setImagen2(recuerdo.getImagen2());
-		recuerdoUpdate.setImagen3(recuerdo.getImagen3());
-		recuerdoUpdate.setImagen4(recuerdo.getImagen4());
-		recuerdoUpdate.setVideo1(recuerdo.getVideo1());
-		recuerdoUpdate.setVideo2(recuerdo.getVideo2());
 		otrosRecuerdosService.guardar(recuerdoUpdate);
 		return new ResponseEntity(new Mensaje("recuerdo actualizado"), HttpStatus.CREATED);
 	}

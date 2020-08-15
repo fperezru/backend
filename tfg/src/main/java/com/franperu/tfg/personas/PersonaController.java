@@ -72,14 +72,7 @@ public class PersonaController {
 		personaUpdate.setApellido2(persona.getApellido2());
 		personaUpdate.setRelacion(persona.getRelacion());
 		personaUpdate.setDescripcion(persona.getDescripcion());
-		personaUpdate.setImagen1(persona.getImagen1());
-		personaUpdate.setImagen2(persona.getImagen2());
-		personaUpdate.setImagen3(persona.getImagen3());
-		personaUpdate.setImagen4(persona.getImagen4());
-		personaUpdate.setVideo1(persona.getVideo1());
-		personaUpdate.setVideo2(persona.getVideo2());
 		personaUpdate.setFechaNacimiento(persona.getFechaNacimiento());
-		personaUpdate.setFechaDefuncion(persona.getFechaDefuncion());
 		personaService.guardar(personaUpdate);
 		return new ResponseEntity(new Mensaje("persona actualizada"), HttpStatus.CREATED);
 	}
