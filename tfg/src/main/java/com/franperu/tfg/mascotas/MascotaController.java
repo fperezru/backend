@@ -24,7 +24,7 @@ import com.franperu.tfg.personas.Persona;
 
 @RestController
 @RequestMapping("/api/mascotas")
-@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.38:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.34:4200"})
 public class MascotaController {
 
 	@Autowired
@@ -62,7 +62,7 @@ public class MascotaController {
 		usuario = usuarioOptional.get();
 		mascota.setUsuario(usuario);
 		mascotaService.guardar(mascota);
-		return new ResponseEntity(new Mensaje("mascota guardada"), HttpStatus.CREATED);
+		return new ResponseEntity<Mascota>(mascota, HttpStatus.OK);
 	}
 	
 	@PutMapping("/actualizar/{id}")

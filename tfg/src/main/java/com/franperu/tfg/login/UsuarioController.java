@@ -20,7 +20,7 @@ import com.franperu.tfg.DTO.Mensaje;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.38:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.34:4200"})
 public class UsuarioController {
 
 	@Autowired
@@ -61,7 +61,11 @@ public class UsuarioController {
 		usuarioUpdate.setTelefono(usuario.getTelefono());
 		usuarioUpdate.setEmail(usuario.getEmail());
 		usuarioUpdate.setPermiso(usuario.getPermiso());
-		usuarioUpdate.setPassword(passwordEncoder.encode(usuario.getPassword()));
+		usuarioUpdate.setFamiliar(usuario.getFamiliar());
+		
+		if(usuario.getPassword() != null) 
+			usuarioUpdate.setPassword(passwordEncoder.encode(usuario.getPassword()));
+		
 		usuarioService.guardar(usuarioUpdate);
 		return new ResponseEntity(new Mensaje("usuario actualizado"), HttpStatus.CREATED);
 	}

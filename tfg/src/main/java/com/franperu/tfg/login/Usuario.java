@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.franperu.tfg.archivo.Archivo;
 import com.franperu.tfg.diario.Diario;
 import com.franperu.tfg.informacion.EntityIdResolver;
 import com.franperu.tfg.informacion.Informacion;
@@ -74,7 +75,7 @@ public class Usuario {
 	private Boolean permiso;
     
     @NotNull
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Rol> roles = new HashSet<>();
@@ -112,6 +113,11 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Informacion> informaciones =  new HashSet<>();;
+    
+    @JsonManagedReference
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Archivo> archivos;
 
     public Usuario() {
     }
@@ -289,5 +295,12 @@ public class Usuario {
     public void setLocalizaciones(Set<Localizacion> localizaciones) {
         this.localizaciones = localizaciones;
     }
-    
+
+	public Set<Archivo> getArchivos() {
+		return archivos;
+	}
+
+	public void setArchivos(Set<Archivo> archivos) {
+		this.archivos = archivos;
+	}   
 }

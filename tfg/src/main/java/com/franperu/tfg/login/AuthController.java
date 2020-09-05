@@ -31,7 +31,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.38:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.34:4200"})
 public class AuthController {
 
     @Autowired
@@ -100,9 +100,18 @@ public class AuthController {
     @GetMapping("/user/{n}")
 	public ResponseEntity<Usuario> getOne(@PathVariable String n){
 	    if(!usuarioService.existePorNombre(n))
-	       return new ResponseEntity(new Mensaje("no existe esa usuario"), HttpStatus.NOT_FOUND);
+	       return new ResponseEntity(new Mensaje("no existe ese usuario"), HttpStatus.NOT_FOUND);
 	        
 	    Usuario usuario = usuarioService.getByNombreUsuario(n).get();
+	    return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+	}
+    
+    @GetMapping("/usuario/{id}")
+	public ResponseEntity<Usuario> getOne(@PathVariable Long id){
+	    if(!usuarioService.existePorId(id))
+	       return new ResponseEntity(new Mensaje("no existe ese usuario"), HttpStatus.NOT_FOUND);
+	        
+	    Usuario usuario = usuarioService.getById(id).get();
 	    return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 	}
 }
