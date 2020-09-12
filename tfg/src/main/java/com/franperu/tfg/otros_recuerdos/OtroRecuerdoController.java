@@ -60,7 +60,7 @@ public class OtroRecuerdoController {
 		usuario = usuarioOptional.get();
 		recuerdo.setUsuario(usuario);
 		otrosRecuerdosService.guardar(recuerdo);
-		return new ResponseEntity(new Mensaje("recuerdo guardado"), HttpStatus.CREATED);
+		return new ResponseEntity<OtroRecuerdo>(recuerdo, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/actualizar/{id}")

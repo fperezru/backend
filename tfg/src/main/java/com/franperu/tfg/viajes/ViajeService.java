@@ -30,6 +30,10 @@ public class ViajeService {
 		return viajeRepository.findById(id);
 	}
 	
+	public Optional<Viaje> obtenerPorLugar(String lugar) {
+		return viajeRepository.findByLugar(lugar);
+	}
+	
 	public void guardar(Viaje viaje) {
 		viajeRepository.save(viaje);
 	}

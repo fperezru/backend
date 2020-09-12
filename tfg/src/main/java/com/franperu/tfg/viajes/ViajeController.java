@@ -54,6 +54,13 @@ public class ViajeController {
 	    return new ResponseEntity<Viaje>(viaje, HttpStatus.OK);
 	}
 	
+	@GetMapping("/detalles/{lugar}")
+	public ResponseEntity<Viaje> getOneLugar(@PathVariable String lugar){
+	        
+	    Viaje viaje = viajeService.obtenerPorLugar(lugar).get();
+	    return new ResponseEntity<Viaje>(viaje, HttpStatus.OK);
+	}
+	
 	@PostMapping("/nuevo/{id}")
 	public ResponseEntity<?> create(@RequestBody Viaje viaje, @PathVariable Long id) {
 		Optional<Usuario> usuarioOptional = usuarioService.getById(id);
@@ -61,7 +68,7 @@ public class ViajeController {
 		usuario = usuarioOptional.get();
 		viaje.setUsuario(usuario);
 		viajeService.guardar(viaje);
-		return new ResponseEntity(new Mensaje("viaje guardado"), HttpStatus.CREATED);
+		return new ResponseEntity<Viaje>(viaje, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/actualizar/{id}")
