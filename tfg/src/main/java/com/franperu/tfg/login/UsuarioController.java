@@ -20,7 +20,7 @@ import com.franperu.tfg.DTO.Mensaje;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.34:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.0.21:4200"})
 public class UsuarioController {
 
 	@Autowired

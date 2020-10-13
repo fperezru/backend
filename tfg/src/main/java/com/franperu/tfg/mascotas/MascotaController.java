@@ -24,7 +24,7 @@ import com.franperu.tfg.personas.Persona;
 
 @RestController
 @RequestMapping("/api/mascotas")
-@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.34:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.0.21:4200"})
 public class MascotaController {
 
 	@Autowired

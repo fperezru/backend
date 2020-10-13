@@ -23,7 +23,7 @@ import com.franperu.tfg.login.UsuarioService;
 
 @RestController
 @RequestMapping("/api/viajes")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.0.21:4200"})
 public class ViajeController {
 
 	@Autowired

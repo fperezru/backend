@@ -16,7 +16,7 @@ import com.franperu.tfg.login.UsuarioService;
 
 @RestController
 @RequestMapping("/api/archivos")
-@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.34:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.0.21:4200"})
 public class ArchivoController {
 
 	@Autowired

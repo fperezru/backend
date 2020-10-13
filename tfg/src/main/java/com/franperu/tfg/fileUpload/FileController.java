@@ -27,7 +27,7 @@ import com.franperu.tfg.login.UsuarioService;
 
 @RestController
 @RequestMapping("/api/upload")
-@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.1.34:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.0.21:4200"})
 public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
